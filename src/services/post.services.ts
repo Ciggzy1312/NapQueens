@@ -23,3 +23,17 @@ export const getPosts = async () => {
         return { error: "Fetching posts failed" }
     }
 };
+
+export const getPost = async (id: string) => {
+    try {
+        const post = await Post.findById(id);
+        if (!post) {
+            return { post: null, error: "Post not found" };
+        }
+
+        return { post, error: null };
+    } catch (error: any) {
+        log.error(error)
+        return { error: "Fetching post failed" }
+    }
+};
