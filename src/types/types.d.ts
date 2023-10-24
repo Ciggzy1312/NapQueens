@@ -7,3 +7,7 @@ export interface PostInput {
 export interface CreatePostInput extends PostInput {
     category_id: string;
 }
+
+export interface CreateCategoryInput {
+    name: string;
+}
