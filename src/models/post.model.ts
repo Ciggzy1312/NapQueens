@@ -10,7 +10,8 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     category_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
         required: true
     }
 }, { timestamps: true });
