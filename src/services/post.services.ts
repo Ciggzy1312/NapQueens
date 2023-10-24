@@ -51,3 +51,17 @@ export const updatePost = async (id: string, input: PostInput) => {
         return { error: "Updating post failed" };
     }
 };
+
+export const deletePost = async (id: string) => {
+    try {
+        const post = await Post.findByIdAndDelete(id);
+        if (!post) {
+            return { post: null, error: "Post not found" };
+        }
+
+        return { post, error: null };
+    } catch (error: any) {
+        log.error(error);
+        return { error: "Deleting post failed" };
+    }
+}
