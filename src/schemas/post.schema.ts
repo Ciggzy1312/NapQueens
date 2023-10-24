@@ -14,3 +14,12 @@ export const createPostSchema = z.object({
         invalid_type_error: "Category must be a string",
     }),
 });
+
+export const updatePostSchema = z.object({
+    title: z.string({
+        invalid_type_error: "Title must be a string",
+    }).optional(),
+    content: z.string({
+        invalid_type_error: "Content must be a string",
+    }).optional(),
+})

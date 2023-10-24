@@ -1,5 +1,5 @@
 import log from "../utils/logger";
-import { CreatePostInput } from "../types/types";
+import { PostInput, CreatePostInput } from "../types/types";
 import { Post } from "../models/post.model";
 
 export const createPost = async (input: CreatePostInput) => {
@@ -35,5 +35,19 @@ export const getPost = async (id: string) => {
     } catch (error: any) {
         log.error(error)
         return { error: "Fetching post failed" }
+    }
+};
+
+export const updatePost = async (id: string, input: PostInput) => {
+    try {
+        const post = await Post.findByIdAndUpdate(id, input, { new: true });
+        if (!post) {
+            return { post: null, error: "Post not found" };
+        }
+
+        return { post, error: null };
+    } catch (error: any) {
+        log.error(error);
+        return { error: "Updating post failed" };
     }
 };

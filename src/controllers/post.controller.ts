@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPost, getPosts, getPost } from "../services/post.services";
+import { createPost, getPosts, getPost, updatePost } from "../services/post.services";
 import log from "../utils/logger";
 
 export const createPostHandler = async (req: Request, res: Response) => {
@@ -48,5 +48,22 @@ export const getPostHandler = async (req: Request, res: Response) => {
     } catch (error: any) {
         log.error(error);
         res.status(400).json({ message: "Fetching post failed"})
+    }
+}
+
+export const updatePostHandler = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { post, error } = await updatePost(id, req.body);
+        if (error) {
+            log.error(error);
+            return res.status(400).json({ message: error });
+        }
+
+        log.info("Post updated successfully");
+        return res.status(200).json({ message: "Post updated successfully", post });
+    } catch (error: any) {
+        log.error(error);
+        res.status(400).json({ message: "Updating post failed" });
     }
 }
