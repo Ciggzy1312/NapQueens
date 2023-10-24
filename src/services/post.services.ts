@@ -12,3 +12,14 @@ export const createPost = async (input: CreatePostInput) => {
         return { error: "Post creation failed" };
     }
 }
+
+export const getPosts = async () => {
+    try {
+        const posts = await Post.find({});
+
+        return { posts, error: null };
+    } catch (error: any) {
+        log.error(error.message);
+        return { error: "Fetching posts failed" }
+    }
+};
