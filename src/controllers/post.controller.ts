@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPost, getPosts, getPost, updatePost, deletePost } from "../services/post.services";
+import { createPost, getPosts, getPost, updatePost, deletePost, getLatestPosts } from "../services/post.services";
 import log from "../utils/logger";
 
 export const createPostHandler = async (req: Request, res: Response) => {
@@ -84,3 +84,19 @@ export const deletePostHandler = async (req: Request, res: Response) => {
         res.status(400).json({ message: "Deleting post failed" });
     }
 };
+
+export const getLatestPostsHandler = async (req: Request, res: Response) => {
+    try {
+        const { latestPosts, error } = await getLatestPosts();
+        if (error) {
+            log.error(error);
+            return res.status(400).json({ message: error });
+        }
+
+        log.info("Latest posts fetched successfully");
+        return res.status(200).json({ message: "Latest posts fetched successfully", posts: latestPosts });
+    } catch (error: any) {
+        log.error(error);
+        res.status(400).json({ message: "Fetching latest posts failed" });
+    }
+}

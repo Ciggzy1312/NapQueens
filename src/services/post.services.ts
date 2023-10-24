@@ -65,3 +65,21 @@ export const deletePost = async (id: string) => {
         return { error: "Deleting post failed" };
     }
 }
+
+export const getLatestPosts = async () => {
+    try {
+        const latestPosts = await Post.aggregate([
+            { $sort: { createdAt: -1 } },
+            { $group: { _id: "$category_id", post: { $first: "$$ROOT" } } },
+            { $replaceRoot: { newRoot: "$post" } },
+            { $lookup: { from: "categories", localField: "category_id", foreignField: "_id", as: "category" } },
+            { $unwind: "$category" },
+            { $project: { "category_id": 0, "category.createdAt": 0, "category.updatedAt": 0 } }
+        ]);
+
+        return { latestPosts, error: null };
+    } catch (error: any) {
+        log.error(error);
+        return { error: "Fetching latest posts failed" };
+    }
+};
