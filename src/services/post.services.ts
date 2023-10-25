@@ -74,7 +74,8 @@ export const getLatestPosts = async () => {
             { $replaceRoot: { newRoot: "$post" } },
             { $lookup: { from: "categories", localField: "category_id", foreignField: "_id", as: "category" } },
             { $unwind: "$category" },
-            { $project: { "category_id": 0, "category.createdAt": 0, "category.updatedAt": 0 } }
+            { $project: { "category_id": 0, "category.createdAt": 0, "category.updatedAt": 0 } },
+            { $sort: { createdAt: -1 } },
         ]);
 
         return { latestPosts, error: null };
